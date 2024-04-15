@@ -1,7 +1,6 @@
 "use client";
  
 import { MultiUploader } from "@/components/helpers/custom-uploader";
-import { MultiImageDropzoneComponent } from "@/components/layouts/image-drop";
 import { UploadButton } from "@/lib/utils/uploadthing";
  
 export default function Home() {
@@ -19,7 +18,6 @@ export default function Home() {
           alert(`ERROR! ${error.message}`);
         }}
       /> */}
-      {/* <MultiImageDropzoneComponent /> */}
       <MultiUploader />
     </main>
   );
