@@ -4,6 +4,7 @@ export default authMiddleware({
   publicRoutes: [
     '/',
     '/api/uploadthing',
+    '/api/webhooks/clerk'
   ]
 });
 
