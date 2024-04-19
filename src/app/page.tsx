@@ -1,9 +1,9 @@
 import { getAllUsers } from "@/actions/user-actions";
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import { currentUser } from "@clerk/nextjs";
+import { currentUser } from "@clerk/nextjs/server";
 
 const Home = async () => {
-  // console.log(await currentUser())
+  console.log(await currentUser())
   const data = await getAllUsers();
   return (
     <>
