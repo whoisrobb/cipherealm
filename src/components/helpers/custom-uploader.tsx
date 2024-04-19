@@ -26,7 +26,7 @@ export const MultiUploader = ({ addFiles, triggerDialog }: { addFiles: (to: File
     // const updatedFiles = files ? [...files, ...newFiles] : newFiles
     const updatedFiles = [...files, ...newFiles]
     setFiles(updatedFiles);
-  }, []);
+  }, [files]);
  
   const { startUpload, permittedFileInfo } = useUploadThing(
     "imageUploader",
