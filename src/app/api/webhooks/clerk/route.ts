@@ -66,6 +66,8 @@ export async function POST(req: Request) {
         avatar: image_url
     };
 
+    console.log(id)
+
     const newUser = await saveUser(user);
 
     return NextResponse.json({ message: "New user created", user: newUser });
