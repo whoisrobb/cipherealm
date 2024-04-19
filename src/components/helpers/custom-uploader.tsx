@@ -74,7 +74,7 @@ export const MultiUploader = ({ addFiles, triggerDialog }: { addFiles: (to: File
                         <UploadIcon />
                     </div>
                     <div className="text-center">
-                        <p className="font-bold">Drag 'n' drop some files here, or click to select files</p>
+                        <p className="font-bold">Drag & drop some files here &lsquo or click to select files</p>
                         <p className="text-sm text-muted-foreground">You can upload up to 8 files (max 4mb each)</p>
                     </div>
                 </div>
