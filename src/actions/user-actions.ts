@@ -1,11 +1,11 @@
 "use server";
 
 import db from "@/db/drizzle";
-import { User, UserTable } from "@/db/schema";
+import { UserTable } from "@/db/schema";
 import { toast } from "sonner";
 
 type SavedUser = {
-    userId: string;
+    clerkId: string;
     username: string;
     avatar: string | null;
 }

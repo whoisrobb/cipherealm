@@ -3,7 +3,8 @@ import { pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { PostTable } from "./post-table";
 
 export const UserTable = pgTable("user", {
-    userId: uuid("userId").primaryKey().notNull(),
+    userId: uuid("userId").defaultRandom().primaryKey().notNull(),
+    clerkId: varchar("clerkId").notNull(),
     username: varchar("username").notNull(),
     bio: text("bio").default(""),
     avatar: varchar("avatar").default(""),
