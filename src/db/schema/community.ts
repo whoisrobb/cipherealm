@@ -1,8 +1,9 @@
+import { generateUUID } from "@/lib/utils/utils";
 import { sql } from "drizzle-orm";
-import { pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
 export const CommunityTable = pgTable("community", {
-    communityId: uuid("communityId").defaultRandom().primaryKey().notNull(),
+    communityId: varchar("communityId").$defaultFn(() => generateUUID()).primaryKey().notNull(),
     name: varchar("name").notNull(),
     description: text("description").notNull(),
     banner: varchar("banner").default(""),

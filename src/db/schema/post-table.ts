@@ -1,12 +1,13 @@
 import { relations, sql } from "drizzle-orm";
-import { json, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { json, pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
 import { UserTable } from "./user-table";
 import { LikeTable } from "./like";
 import { CommentTable } from "./comment";
+import { generateUUID } from "@/lib/utils/utils";
 
 export const PostTable = pgTable("post", {
-    postId: uuid("postId").defaultRandom().primaryKey().notNull(),
-    creatorId: uuid("creatorId").references(() => UserTable.userId).notNull(),
+    postId: varchar("postId").$defaultFn(() => generateUUID()).primaryKey().notNull(),
+    creatorId: varchar("creatorId").references(() => UserTable.userId).notNull(),
     // TODO: implement user relations
     // TODO: implement comments
     // TODO: implement likes

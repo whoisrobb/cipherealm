@@ -23,6 +23,7 @@ import { FileResponse } from '@/lib/types/types';
 import { createPost } from '@/actions/post-actions';
 import UserAvatar from '../layouts/user-avatar';
 import { UserButton } from '@clerk/nextjs';
+import { currentUser } from '@clerk/nextjs/server';
   
 
 type InputType = z.infer<typeof postInputSchema>;
@@ -49,9 +50,13 @@ const PostInput = () => {
         const images = fileUrls?.map((file) => (
             file.serverData.fileUrl
         ))
+
+        const user = await currentUser();
         
+        if (!user) return;
+
         await createPost({
-            creatorId: '9294121a-ca4a-40fd-ab28-ac1502899b7a',
+            creatorId: user.id!,
             content: values.content,
             images: images
         })

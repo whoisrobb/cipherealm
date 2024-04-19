@@ -1,14 +1,15 @@
 import { relations, sql } from "drizzle-orm";
-import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, varchar } from "drizzle-orm/pg-core";
 import { UserTable } from "./user-table";
 import { PostTable } from "./post-table";
 import { LikeTable } from "./like";
+import { generateUUID } from "@/lib/utils/utils";
 
 export const CommentTable = pgTable("comment", {
-    commentId: uuid("commentId").defaultRandom().primaryKey().notNull(),
+    commentId: varchar("commentId").$defaultFn(() => generateUUID()).primaryKey().notNull(),
     content: text("text").notNull(),
-    userId: uuid("userId").references(() => UserTable.userId).notNull(),
-    postId: uuid("postId").references(() => PostTable.postId).notNull(),
+    userId: varchar("userId").references(() => UserTable.userId).notNull(),
+    postId: varchar("postId").references(() => PostTable.postId).notNull(),
     createdAt: timestamp("createdAt").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt").default(sql`current_timestamp`),
     // TODO: implement user relation
