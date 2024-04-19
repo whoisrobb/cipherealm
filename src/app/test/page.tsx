@@ -1,7 +1,7 @@
 import { getAllPosts } from '@/actions/post-actions';
 import PostInput from '@/components/forms/post-input';
 import CreatePost from '@/components/layouts/create-post';
-import { currentUser } from '@clerk/nextjs';
+import { currentUser } from '@clerk/nextjs/server';
 
 const Home = async () => {
     const data = await getAllPosts();
