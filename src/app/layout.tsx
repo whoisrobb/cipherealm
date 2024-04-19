@@ -5,6 +5,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/themes/theme-provider";
 import MainNav from "@/components/layouts/main-nav";
 import { Toaster } from "sonner";
+import ContentLayout from "@/components/shells/content-layout";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,8 +27,12 @@ export default function RootLayout({
             attribute="class"
             defaultTheme="system"
           >
-            <MainNav />
-            {children}
+            <div className="flex justify-center py-2 px-4">
+              <ContentLayout>
+                <MainNav />
+                {children}
+              </ContentLayout>
+            </div>
             <Toaster />
           </ThemeProvider>
         </body>

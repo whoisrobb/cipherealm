@@ -1,6 +1,8 @@
 "use client";
  
+import PostInput from "@/components/forms/post-input";
 import { MultiUploader } from "@/components/helpers/custom-uploader";
+import CreatePost from "@/components/layouts/create-post";
 import { UploadButton } from "@/lib/utils/uploadthing";
  
 export default function Home() {
@@ -18,7 +20,7 @@ export default function Home() {
           alert(`ERROR! ${error.message}`);
         }}
       /> */}
-      <MultiUploader />
+      <CreatePost />
     </main>
   );
 }

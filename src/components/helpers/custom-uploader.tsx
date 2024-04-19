@@ -8,12 +8,13 @@ import { Button } from "../ui/button";
 import Image from "next/image";
 import { Cross2Icon, UploadIcon } from "@radix-ui/react-icons";
 import { toast } from "sonner";
+import { FileResponse } from "@/lib/types/types";
 
-interface MyFileType extends File {
+export interface MyFileType extends File {
     preview: string;
 }
  
-export function MultiUploader() {
+export const MultiUploader = ({ addFiles, triggerDialog }: { addFiles: (to: FileResponse[]) => void, triggerDialog: (to: boolean) => void }) => {
   const [files, setFiles] = useState<MyFileType[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const onDrop = useCallback((acceptedFiles: File[]) => {
@@ -33,6 +34,8 @@ export function MultiUploader() {
       onClientUploadComplete: (fileUrl) => {
         toast("uploaded successfully!");
         console.log("response", fileUrl)
+        addFiles(fileUrl);
+        triggerDialog(false);
         setFiles([]);
         setIsSubmitting(false)
       },
@@ -64,7 +67,7 @@ export function MultiUploader() {
   return (
     <>        
         <div>
-            <div {...getRootProps()} className="cursor-pointer border-2 border-dashed h-48 w-full grid place-items-center">
+            <div {...getRootProps()} className="cursor-pointer border-2 border-dashed rounded-lg h-48 w-full grid place-items-center">
                 <input {...getInputProps()} />
                 <div className="grid place-items-center gap-y-4">
                     <div className="border border-dashed rounded-full h-12 w-12 grid place-items-center">
@@ -90,7 +93,7 @@ export function MultiUploader() {
                 disabled={isSubmitting}
                 onClick={() => {setIsSubmitting(true); startUpload(files);}}
             >
-                Submit
+                Continue
             </Button>}
         </div>
     </>

@@ -1,0 +1,15 @@
+import React from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { currentUser } from '@clerk/nextjs';
+
+const UserAvatar = async () => {
+    const user = await currentUser();
+  return (
+    <Avatar>
+        <AvatarImage src={user?.imageUrl} />
+        <AvatarFallback>CN</AvatarFallback>
+    </Avatar>
+  )
+}
+
+export default UserAvatar
