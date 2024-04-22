@@ -1,3 +1,5 @@
+import { Post, User } from "@/db/schema";
+
 export type FileResponse = {
     key: string;
     name: string;
@@ -12,4 +14,9 @@ export type PostType = {
     content: string | null;
     images?: string[] | null;
     fileType?: string | null;
+}
+
+export type PostData = {
+    post: Post;
+    user: User;
 }

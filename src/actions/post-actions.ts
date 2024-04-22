@@ -1,14 +1,18 @@
 "use server";
 
 import db from "@/db/drizzle";
-import { PostTable } from "@/db/schema";
+import { PostTable, UserTable } from "@/db/schema";
 import { PostType } from "@/lib/types/types";
+import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
 
 // GET ALL POSTS
 export const getAllPosts = async () => {
-    const data = await db.select().from(PostTable);
+    const data = await db.select({ "post": PostTable, "user": UserTable })
+        .from(PostTable)
+        .innerJoin(UserTable, eq(PostTable.creatorId, UserTable.userId));
+
     return data;
 }
 
