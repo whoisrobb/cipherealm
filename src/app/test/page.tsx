@@ -6,13 +6,13 @@ import { currentUser } from '@clerk/nextjs/server';
 
 const Home = async () => {
     const data = await getAllPosts();
-    const id = generateUUID();
+    const currUser = await currentUser();
+    const id = currUser?.id;
     // console.log(user)
   return (
     <div className=''>
-      <PostInput />
+      <PostInput id={id!} />
         {JSON.stringify(data)}
-        {JSON.stringify(id)}
     </div>
   )
 }

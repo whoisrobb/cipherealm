@@ -23,12 +23,14 @@ import { FileResponse } from '@/lib/types/types';
 import { createPost } from '@/actions/post-actions';
 import UserAvatar from '../layouts/user-avatar';
 import { UserButton } from '@clerk/nextjs';
-import { currentUser } from '@clerk/nextjs/server';
   
 
 type InputType = z.infer<typeof postInputSchema>;
+type PostInputProps = {
+    id: string;
+}
 
-const PostInput = () => {
+const PostInput = ({ id }: PostInputProps) => {
     const [fileUrls, setFileUrls] = useState<FileResponse[] | null>(null);
     const [dialogOpen, setDialogOpen] = useState(false);
     const form = useForm<InputType>({
@@ -50,13 +52,11 @@ const PostInput = () => {
         const images = fileUrls?.map((file) => (
             file.serverData.fileUrl
         ))
-
-        const user = await currentUser();
         
-        if (!user) return;
+        // if (!id) return;
 
         await createPost({
-            creatorId: user.id!,
+            creatorId: id,
             content: values.content,
             images: images
         })

@@ -8,9 +8,6 @@ import { generateUUID } from "@/lib/utils/utils";
 export const PostTable = pgTable("post", {
     postId: varchar("postId").$defaultFn(() => generateUUID()).primaryKey().notNull(),
     creatorId: varchar("creatorId").references(() => UserTable.userId).notNull(),
-    // TODO: implement user relations
-    // TODO: implement comments
-    // TODO: implement likes
     content: text("text"),
     images: json("fileUrl").$type<string[] | null>().default(null),
     createdAt: timestamp("createdAt").defaultNow().notNull(),

@@ -6,12 +6,10 @@ import { generateUUID } from "@/lib/utils/utils";
 export const UserTable = pgTable("user", {
     userId: varchar("userId").$defaultFn(() => generateUUID()).primaryKey().notNull(),
     username: varchar("username").notNull(),
+    email: varchar("email").notNull(),
     bio: text("bio").default(""),
     avatar: varchar("avatar").default(""),
     createdAt: timestamp("createdAt").defaultNow().notNull()
-    // TODO: implement followers, user relations 
-    // TODO: implement following, user relations 
-    // TODO: implement saved posts, post relations 
 });
 
 export const UserTableRelations = relations(UserTable, ({ many }) => {

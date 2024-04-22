@@ -1,7 +1,7 @@
 import { Webhook } from 'svix'
 import { headers } from 'next/headers'
 import { WebhookEvent } from '@clerk/nextjs/server'
-import { saveUser } from '@/actions/user-actions'
+import { saveOrUpdateUser } from '@/actions/user-actions'
 import { NextResponse } from 'next/server'
  
 export async function POST(req: Request) {
@@ -57,28 +57,21 @@ export async function POST(req: Request) {
   console.log('Webhook body:', body)
 
   // CREATE NEW USER
-  if (eventType == "user.created") {
-    const { id, username, image_url } = evt.data;
+  if (eventType == "user.created" || eventType == "user.updated") {
+    const { id, username, image_url, email_addresses } = evt.data;
 
     const user = {
-        clerkId: id,
+        // clerkId: id,
         username: username!,
+        email: email_addresses[0].email_address,
         avatar: image_url
     };
 
     console.log(id)
 
-    const newUser = await saveUser(user);
+    const newUser = await saveOrUpdateUser(user);
 
     return NextResponse.json({ message: "New user created", user: newUser });
-
-    /*
-    userId: string;
-    username: string;
-    bio: string | null;
-    avatar: string | null;
-    createdAt: Date;
-    */
   }
  
   return new Response('', { status: 200 })
