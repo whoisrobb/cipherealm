@@ -44,3 +44,16 @@ export const saveOrUpdateUser = async (userData: SavedUser) => {
 export const getAllUsers = async () => {
     return db.select().from(UserTable)
 }
+
+// GET SINGLE USER
+export const getUserByUsername = async (username: string) => {
+    try {
+        const user = await db.select()
+            .from(UserTable)
+            .where(eq(UserTable.username, username))
+
+        return user;
+    } catch (err) {
+        console.error(err);
+    }
+}

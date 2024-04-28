@@ -15,7 +15,7 @@ import {
 // });
 
 const isProtectedRoute = createRouteMatcher([
-  '/test(.*)',
+  '/home(.*)',
   '/upload(.*)',
 ]);
  

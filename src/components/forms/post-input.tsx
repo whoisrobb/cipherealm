@@ -23,14 +23,15 @@ import { FileResponse } from '@/lib/types/types';
 import { createPost } from '@/actions/post-actions';
 import UserAvatar from '../layouts/user-avatar';
 import { UserButton } from '@clerk/nextjs';
+import { User } from '@/db/schema';
   
 
 type InputType = z.infer<typeof postInputSchema>;
 type PostInputProps = {
-    id: string;
+    user: User[];
 }
 
-const PostInput = ({ id }: PostInputProps) => {
+const PostInput = ({ user }: PostInputProps) => {
     const [fileUrls, setFileUrls] = useState<FileResponse[] | null>(null);
     const [dialogOpen, setDialogOpen] = useState(false);
     const form = useForm<InputType>({
@@ -56,7 +57,7 @@ const PostInput = ({ id }: PostInputProps) => {
         // if (!id) return;
 
         await createPost({
-            creatorId: id,
+            creatorId: user[0].userId,
             content: values.content,
             images: images
         })
@@ -65,8 +66,8 @@ const PostInput = ({ id }: PostInputProps) => {
     }
 
   return (    
-    <div className='p-2 gap-2 border flex'>
-        <UserButton />
+    <div className='p-2 gap-2 border flex rounded-md'>
+        {/* <UserAvatar avatar={user[0].avatar!} /> */}
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-2">
                 <FormField
@@ -75,8 +76,6 @@ const PostInput = ({ id }: PostInputProps) => {
                     render={({ field }) => (
                         <FormItem>
                         <FormControl>
-
-
                             <Input
                                 placeholder="What's on your mind?"
                                 {...field}

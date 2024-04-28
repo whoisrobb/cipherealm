@@ -1,16 +1,20 @@
 import { getAllPosts } from '@/actions/post-actions';
+import { getUserByUsername } from '@/actions/user-actions';
 import PostInput from '@/components/forms/post-input';
 import PostItem from '@/components/layouts/post-item';
+import { User } from '@/db/schema';
 import { currentUser } from '@clerk/nextjs/server';
+import { useParams } from 'next/navigation';
 
 const Home = async () => {
-    const postData = await getAllPosts();
-    const currUser = await currentUser();
-    const id = currUser?.id;
-    // console.log(user)
+  const currUser = await currentUser();
+  
+  let user = await getUserByUsername(currUser?.username!);
+  const postData  = await getAllPosts();
+
   return (
-    <div className=''>
-      <PostInput id={id!} />
+    <div className='space-y-4'>
+      <PostInput user={user!} />
       <div className="space-y-2">
         {postData.map((post) => (
           <PostItem key={post.post.postId} post={post} />
