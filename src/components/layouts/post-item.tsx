@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
 import PostContent from './post-content';
 import PostReply from '../forms/post-reply';
+import PostImages from './post-images';
 
 export type PostItemProps = {
     post: PostData;

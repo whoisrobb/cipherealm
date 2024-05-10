@@ -5,6 +5,7 @@ import { formatDate } from '@/lib/utils/utils'
 import { Button } from '../ui/button'
 import { BookmarkIcon, DotsVerticalIcon } from '@radix-ui/react-icons'
 import { PostItemProps } from './post-item'
+import PostImages from './post-images'
 
 const PostContent = ({ post }: PostItemProps) => {
     return (
@@ -26,8 +27,9 @@ const PostContent = ({ post }: PostItemProps) => {
                   </Button>
               </div>
           </div>
-          <div className="">
-              <p className="">{post.post.content}</p>
+          <div className="space-y-2">
+                <p className="">{post.post.content}</p>
+                {post.post.images && <PostImages imageUrls={post.post.images} />}
           </div>
       </div>
     )
