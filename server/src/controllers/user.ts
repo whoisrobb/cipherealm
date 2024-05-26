@@ -65,8 +65,13 @@ export const getUserByUsername = async (req: Request, res: Response) => {
     }
 };
 
-
 export const deleteAll = async (req: Request, res: Response) => {
     await db.delete(UserTable)
+    res.status(200).json({ message: 'Deleted' })
+}
+
+export const deleteUser = async (req: Request, res: Response) => {
+    const { username } = req.body;
+    await db.delete(UserTable).where(eq(UserTable.username, username))
     res.status(200).json({ message: 'Deleted' })
 }

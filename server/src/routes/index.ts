@@ -1,6 +1,6 @@
 import express from "express";
 const router = express.Router();
-import { deleteAll, getAllUsers, getUserByUsername, saveOrUpdateUser } from "../controllers/user";
+import { deleteAll, deleteUser, getAllUsers, getUserByUsername, saveOrUpdateUser } from "../controllers/user";
 import { createNewPost, getAllPosts } from "../controllers/post";
 
 
@@ -21,6 +21,9 @@ router.post('/posts/save', createNewPost);
 
 // DELETE ALL USERS FOR SOME REASON
 router.delete('/users', deleteAll);
+
+// DELETE USER FOR SOME REASON
+router.delete('/users/:username', deleteUser);
 
 
 export default router;
