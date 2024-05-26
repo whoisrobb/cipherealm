@@ -7,7 +7,7 @@ import { generateUUID } from "../../lib/utils";
 
 export const PostTable = pgTable("post", {
     postId: varchar("postId").$defaultFn(() => generateUUID()).primaryKey().notNull(),
-    creatorId: varchar("creatorId").references(() => UserTable.userId).notNull(),
+    creatorId: varchar("creatorId").references(() => UserTable.userId, { onDelete: 'cascade' }).notNull(),
     content: text("text"),
     images: json("fileUrl").$type<string[] | null>().default(null),
     createdAt: timestamp("createdAt").defaultNow().notNull(),
