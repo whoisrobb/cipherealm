@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import appRoutes from './routes';
+import { ClerkExpressRequireAuth } from '@clerk/clerk-sdk-node';
 
 
 /* CONFIGURATIONS */
@@ -12,7 +13,10 @@ app.use(cors());
 
 
 /* ROUTES */
-app.use('/', appRoutes);
+app.use('/',
+    // ClerkExpressRequireAuth({}),
+    appRoutes
+);
 
 
 const port = process.env.PORT;

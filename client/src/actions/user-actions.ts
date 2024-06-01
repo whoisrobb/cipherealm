@@ -1,5 +1,6 @@
 import { SaveUserProps } from "@/lib/types/types";
 import { serverUrl } from "@/lib/utils/utils";
+import { auth } from "@clerk/nextjs/server";
 
 
 // CREATE NEW USER
@@ -34,6 +35,25 @@ export const getUserByUsername = async (username: string) => {
     }
 };
 
+// GET USER BY EMAIL
+export const getUserByEmail = async (email: string) => {
+    try {
+        const { getToken } = auth();
+        const token = await getToken();
+
+        const response = await fetch(`${serverUrl}/users/${email}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        const data = await response.json();
+        return data;
+    } catch (err) {
+        console.error(err);
+    }
+};
+
 // GET ALL USERS
 export const getAllUsers = async () => {
     try {
@@ -44,16 +64,3 @@ export const getAllUsers = async () => {
         console.error(err)
     }
 };
-
-// GET SINGLE USER
-// export const getUserByUsername = async (username: string) => {
-//     try {
-//         const user = await db.select()
-//             .from(UserTable)
-//             .where(eq(UserTable.username, username))
-
-//         return user;
-//     } catch (err) {
-//         console.error(err);
-//     }
-// }

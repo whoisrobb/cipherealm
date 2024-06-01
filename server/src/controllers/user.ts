@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import db from "../db";
 import { UserTable } from "../db/schema";
-import { Request, Response } from "express";
+import { Request, Response, Errback } from "express";
 
 
 // GET ALL USERS
@@ -65,7 +65,23 @@ export const getUserByUsername = async (req: Request, res: Response) => {
     }
 };
 
-export const deleteAll = async (req: Request, res: Response) => {
+// GET USER BY EMAIL
+export const getUserByEmail = async (req: Request, res: Response) => {
+    try {
+        const { email } = req.params;
+        const user = await db.query
+            .UserTable
+            .findFirst({
+                where: eq(UserTable.email, email)
+            })
+
+        return user;
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
+
+export const deleteAll = async (_req: Request, res: Response) => {
     await db.delete(UserTable)
     res.status(200).json({ message: 'Deleted' })
 }

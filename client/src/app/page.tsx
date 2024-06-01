@@ -1,13 +1,14 @@
-import { getAllUsers } from "@/actions/user-actions";
+import { getAllUsers, getUserByEmail } from "@/actions/user-actions";
 import { ModeToggle } from "@/components/ui/mode-toggle";
 import { User } from "@/lib/types/types";
 import { UserButton } from "@clerk/nextjs";
-import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 
+
 const Home = async () => {
-  // console.log(await currentUser())
   const data = await getAllUsers();
+  const protect = await getUserByEmail('developedbyrobbie@gmail.com')
+  console.log("protected data", protect)
   return (
     <>
       <UserButton />
