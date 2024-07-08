@@ -9,6 +9,8 @@ export const ProductTable = pgTable("product", {
     description: text("description").notNull(),
     price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
     images: json("images").$type<string[] | null>().default(null),
+    size: json("size").$type<string[] | null>().default(null),
+    gender: varchar("gender"),
     discount: integer("discount").notNull().default(0),
     inventory: integer("inventory").notNull().default(0),
     category: varchar("category"),

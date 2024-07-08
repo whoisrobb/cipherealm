@@ -27,7 +27,7 @@ export const useUser = () => {
 const UserProvider = ({ children }: UserProviderProps) => {
     const { getItem, setItem, removeItem } = useLocalStorage('authStorage');
     const userData = getItem();
-    const parsedData = userData ? JSON.parse(userData) : null;
+    const parsedData = userData || null;
     const [user, setUserData] = useState<User | null>(parsedData);
 
     useEffect(() => {

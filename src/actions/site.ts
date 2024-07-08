@@ -16,7 +16,18 @@ export const getCategories = async () => {
             }
         })
 
-        return { data: categories };
+        const temp = [{
+            categoryId: '827e2-o92id-23u20-jd023ud0',
+            title: 'Exhibit',
+            subcategories: [{
+                categoryId: '827e2-o92id-23u20-jd023ud0',
+                title: 'Efdens',
+                description: 'Efdens iko kwa kalatas',
+                subcategoryId: 'k25e2-o9s87c-23u20-0kw9qd81'
+            }]
+        }]
+
+        return { data: temp };
     } catch (error) {
         return { error: getErrorMessage(error) };
     }

@@ -58,6 +58,7 @@ const ImageSlider = ({ images }: ImageSliderProps) => {
                     size={'icon'}
                     className='absolute size-6 rounded-full left-2 top-[50%] z-50'
                     onClick={decreaseCount}
+                    type='button'
                 >
                     <ChevronLeftIcon />
                 </Button>
@@ -86,6 +87,7 @@ const ImageSlider = ({ images }: ImageSliderProps) => {
                         size={'icon'}
                         className='absolute size-6 rounded-full right-2 top-[50%] z-50'
                         onClick={increaseCount}
+                        type='button'
                     >
                         <ChevronRightIcon />
                     </Button>
