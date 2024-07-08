@@ -1,6 +1,7 @@
 "use client";
 
 import { Product } from "@/db/schema";
+import useLocalStorage from "@/hooks/use-local-storage";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
 type CartContextValue = {
@@ -35,15 +36,13 @@ export const useCart = () => {
 };
 
 const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
-    // const [cartItems, setCartItems] = useState<string[] | []>(
-    //     JSON.parse(localStorage.getItem('cart')) || []
-    // )
-    const cartString = localStorage.getItem('cart');
+    const { getItem, setItem } = useLocalStorage('cart');
+    const cartString = getItem();
     const parsedCart = cartString ? JSON.parse(cartString) : [];
     const [cartItems, setCartItems] = useState<CartProduct[] | []>(parsedCart);
 
     useEffect(() => {
-        localStorage.setItem('cart', JSON.stringify(cartItems))
+        setItem(cartItems);
     }, [cartItems])
 
     const cartQuantity = cartItems.reduce(
