@@ -10,7 +10,7 @@ import {
     NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import { useSiteConfig } from "../_config/useSiteConfig";
+import { useSiteConfig } from "../../../hooks/useSiteConfig";
   
 
 const NavElement = () => {

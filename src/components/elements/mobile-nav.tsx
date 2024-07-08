@@ -16,7 +16,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { useSiteConfig } from "@/app/(storefront)/_config/useSiteConfig";
+import { useSiteConfig } from "@/hooks/useSiteConfig";
 import Link from "next/link";
 import { useState } from "react";
 
