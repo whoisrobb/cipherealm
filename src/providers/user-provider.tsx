@@ -1,5 +1,6 @@
 "use client";
 
+import useLocalStorage from "@/hooks/use-local-storage";
 import { User } from "@/lib/types";
 import { ReactNode, createContext, useContext, useEffect, useState } from "react";
 
@@ -24,13 +25,14 @@ export const useUser = () => {
 };
 
 const UserProvider = ({ children }: UserProviderProps) => {
-    const userData = localStorage.getItem("authStorage");
+    const { getItem, setItem, removeItem } = useLocalStorage('authStorage');
+    const userData = getItem();
     const parsedData = userData ? JSON.parse(userData) : null;
     const [user, setUserData] = useState<User | null>(parsedData);
 
     useEffect(() => {
         if (user) {
-            localStorage.setItem("authStorage", JSON.stringify(user));
+            setItem(user);
         }
     }, [user])
 
@@ -40,7 +42,7 @@ const UserProvider = ({ children }: UserProviderProps) => {
 
     const removeUser = () => {
         setUserData(null);
-        localStorage.removeItem("authStorage");
+        removeItem();
         localStorage.removeItem("accessToken");
     }
 
