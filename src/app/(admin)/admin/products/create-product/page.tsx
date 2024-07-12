@@ -5,8 +5,8 @@ import React from 'react'
 const CreateProduct = () => {
   return (
     <ContentShell
-        title='Create product'
-        subtitle='Submit new product data'
+      title='Create product'
+      subtitle='Submit new product data'
     >
       <ProductForm />
     </ContentShell>

@@ -46,7 +46,7 @@ type Category = {
 }
 
 const sizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
-const images = [
+const testImages = [
   '720116452_1.png',
   '720116452_2.png',
   '720116452_3.png',
@@ -97,7 +97,7 @@ const ProductForm = ({ productData }: ProductFormProps) => {
 
     const onSubmit = async (values: InputSchema) => {
         setIsSubmitting(true);
-        const formData = {...values, images}
+        const formData = {...values, images: testImages}
         try {
             const { data, error } = await handleCreateProduct(formData);
 

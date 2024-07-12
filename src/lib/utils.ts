@@ -33,3 +33,8 @@ const NUMBER_FORMATTER = new Intl.NumberFormat("en-US")
 export function formatNumber(number: number) {
   return NUMBER_FORMATTER.format(number)
 }
+
+export const formatDate = (date: Date): string => {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: 'numeric' };
+  return new Date(date).toLocaleDateString(undefined, options);
+};
