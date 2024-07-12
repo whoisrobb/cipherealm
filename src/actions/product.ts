@@ -91,3 +91,15 @@ export const handleFetchSingleProduct = async (productId: string) => {
         return { error: getErrorMessage(error) };
     }
 }
+
+// DELETE PRODUCT
+export const handleDeleteProduct = async (productId: string) => {
+    try {
+        await db.delete(ProductTable).where(eq(ProductTable.productId, productId));
+        revalidatePath('/admin/products')
+
+        return { resp: 'Product deleted successfully' }
+    } catch (error) {
+        return { error: getErrorMessage(error) };
+    }
+}

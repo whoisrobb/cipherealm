@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,24 +10,45 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from '../ui/button';
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
-import { useRouter } from 'next/navigation';
 
-const DropdownOptions = ({ productId }: { productId: string }) => {
-    const router = useRouter();
+type DropdownOptionsProps = {
+  // openModal: Dispatch<SetStateAction<boolean>>;
+  actionFunc: () => void;
+  deleteFunc: () => void;
+}
+
+const DropdownOptions = ({ actionFunc, deleteFunc }: DropdownOptionsProps) => {
+    // const [isOpen, setIsOpen] = useState(false);
   return (
-    <DropdownMenu>
+    <>
+      <DropdownMenu>
         <DropdownMenuTrigger asChild>
-            <Button aria-haspopup="true" size="icon" variant="ghost">
-                <DotsHorizontalIcon className="h-4 w-4" />
-                <span className="sr-only">Toggle menu</span>
-            </Button>
+          <Button aria-haspopup="true" size="icon" variant="ghost">
+            <DotsHorizontalIcon className="h-4 w-4" />
+            <span className="sr-only">Toggle menu</span>
+          </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem onClick={() => router.push(`/admin/products/edit-product/${productId}`)}>Edit</DropdownMenuItem>
-            <DropdownMenuItem>Delete</DropdownMenuItem>
+          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+          <DropdownMenuItem onClick={actionFunc}>Edit</DropdownMenuItem>
+          <DropdownMenuItem onClick={deleteFunc}>Delete</DropdownMenuItem>
         </DropdownMenuContent>
-    </DropdownMenu>
+      </DropdownMenu>
+
+      {/* <DropdownDialog
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        title='Are you sure you want to delete this product?'
+      >
+        <div className="">
+          This action will result in permanent loss of data. Do you want to continue?
+          <div className="flex gap-2">
+            <Button onClick={() => {deleteFunc(); setIsOpen(false)}}>Confirm</Button>
+            <Button variant={'secondary'} onClick={() => setIsOpen(false)}>Cancel</Button>
+          </div>
+        </div>
+      </DropdownDialog> */}
+    </>
   )
 }
 
