@@ -11,9 +11,9 @@ export type ProductFormData = {
     category: string;
     subcategory: string;
     price: string;
-    discount: string;
-    inventory: string;
-    tags: string;
+    discount: number;
+    inventory: number;
+    tags: string[];
     gender: "male" | "female" | "unisex";
 }
 
