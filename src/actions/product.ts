@@ -20,18 +20,48 @@ export type ProductFormData = {
 }
 
 // CREATE NEW PRODUCT
-export const handleCreateProduct = async (product: ProductFormData) => {
+export const handleCreateOrUpdateProduct = async (product: ProductFormData, productId?: string) => {
     try {
-        const created = await db.insert(ProductTable)
-            .values(product)
-            .returning()
-        
-        revalidatePath('/admin/products')
+        let data;
 
-        return { data: created[0] }
+        if (productId) {
+            data = await updateProduct(product, productId);
+        } else {
+            data = await createProduct(product);
+        }
+        
+        revalidatePath('/admin/products');
+
+        return { data }
     } catch (error) {
         return { error: getErrorMessage(error) };
     }
+}
+
+// CREATE NEW PRODUCT
+const createProduct = async (product: ProductFormData) => {
+    const data = await db.insert(ProductTable)
+        .values(product)
+        .returning({
+            name: ProductTable.name,
+        })
+        .then((res) => res[0])
+    
+    return data
+}
+
+// UPDATE PRODUCT
+const updateProduct = async (product: ProductFormData, productId: string) => {
+    const data = await db
+        .update(ProductTable)
+        .set(product)
+        .where(eq(ProductTable.productId, productId))
+        .returning({
+            name: ProductTable.name,
+        })
+        .then((res) => res[0])
+
+    return data
 }
 
 // FETCH ALL PRODUCTS

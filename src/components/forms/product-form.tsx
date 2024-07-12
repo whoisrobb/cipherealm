@@ -26,7 +26,7 @@ import ImageSlider from "../elements/image-slider";
 import { MultiUploader } from "../elements/multi-uploader";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
 import { ImageIcon } from "@radix-ui/react-icons";
-import { handleCreateProduct } from "@/actions/product";
+import { handleCreateOrUpdateProduct } from "@/actions/product";
 
 type InputSchema = z.infer<typeof productSchema>;
 
@@ -105,9 +105,9 @@ const ProductForm = ({ productData }: ProductFormProps) => {
             tags: [values.tags],
             images: testImages
         }
-        
+
         try {
-            const { data, error } = await handleCreateProduct(formData);
+            const { data, error } = await handleCreateOrUpdateProduct(formData, productData?.productId);
 
             if (error) {
                 toast.error(error)
