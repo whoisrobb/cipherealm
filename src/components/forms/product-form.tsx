@@ -97,7 +97,15 @@ const ProductForm = ({ productData }: ProductFormProps) => {
 
     const onSubmit = async (values: InputSchema) => {
         setIsSubmitting(true);
-        const formData = {...values, images: testImages}
+        
+        const formData = {
+            ...values,
+            discount: Number(values.discount),
+            inventory: Number(values.inventory),
+            tags: [values.tags],
+            images: testImages
+        }
+        
         try {
             const { data, error } = await handleCreateProduct(formData);
 
