@@ -1,7 +1,8 @@
 import { relations, sql } from "drizzle-orm";
-import { decimal, integer, json, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { decimal, integer, json, pgEnum, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core";
 import { DownloadVerificationTable } from "./download-verification-table";
 
+export const genderEnum = pgEnum('gender', ['male', 'female', 'unisex']);
 
 export const ProductTable = pgTable("product", {
     productId: uuid("productId").defaultRandom().primaryKey().notNull(),
@@ -10,7 +11,7 @@ export const ProductTable = pgTable("product", {
     price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
     images: json("images").$type<string[] | null>().default(null),
     size: json("size").$type<string[] | null>().default(null),
-    gender: varchar("gender"),
+    gender: genderEnum("gender"),
     discount: integer("discount").notNull().default(0),
     inventory: integer("inventory").notNull().default(0),
     category: varchar("category"),

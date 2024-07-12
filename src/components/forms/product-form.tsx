@@ -21,7 +21,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner";
 import { getCategories } from "@/actions/site";
 import { Product } from "@/db/schema";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import ImageSlider from "../elements/image-slider";
+import { MultiUploader } from "../elements/multi-uploader";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { ImageIcon } from "@radix-ui/react-icons";
+import { handleCreateProduct } from "@/actions/product";
 
 type InputSchema = z.infer<typeof productSchema>;
 
@@ -54,6 +59,7 @@ const images = [
 
 const ProductForm = ({ productData }: ProductFormProps) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [images, setImages] = useState<string[] | null>(null);
     const [categories, setCategories] = useState<Category[]>([]);
     const form = useForm<InputSchema>({
         resolver: zodResolver(productSchema),
@@ -66,12 +72,14 @@ const ProductForm = ({ productData }: ProductFormProps) => {
             inventory: productData?.inventory.toString() || '0',
             tags: productData?.tags![0] || '',
             discount: productData?.discount.toString() || '0',
-            gender: productData?.gender || ''
+            gender: productData?.gender || 'unisex'
         }
     })
   
     useEffect(() => {
       fetchCategories();
+
+      if (productData) {setImages(productData.images)};
     }, [])
   
     const fetchCategories = async () => {
@@ -88,7 +96,23 @@ const ProductForm = ({ productData }: ProductFormProps) => {
     }
 
     const onSubmit = async (values: InputSchema) => {
-        console.log(values)
+        setIsSubmitting(true);
+        const formData = {...values, images}
+        try {
+            const { data, error } = await handleCreateProduct(formData);
+
+            if (error) {
+                toast.error(error)
+            } else {
+                setIsSubmitting(false)
+                toast.success(`Successfully created ${data?.name}`);
+                form.reset();
+            }
+        } catch (error: any) {
+            toast.error(error.message)
+        } finally {
+            setIsSubmitting(false)
+        }
     };
 
   return (
@@ -126,32 +150,94 @@ const ProductForm = ({ productData }: ProductFormProps) => {
                             )}
                         />
 
-                        <div className="flex gap-2">
-                            <Select>
-                                <FormControl>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select a size" />
-                                </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    {sizes.map((size) => (
-                                        <SelectItem value={size} key={size}>{size}</SelectItem>
-                                    ))}
-                                </SelectContent>
-                            </Select>
+                        <div className="flex justify-between">
+                            {/* <FormField
+                                control={form.control}
+                                name="size"
+                                render={({ field }) => ( */}
+                                    <FormItem>
+                                        <FormLabel>Size</FormLabel>
+                                        <Select
+                                            // onValueChange={field.onChange}
+                                        >
+                                            <Select>
+                                                <FormControl>
+                                                <SelectTrigger>
+                                                    <SelectValue placeholder="Select a size" />
+                                                </SelectTrigger>
+                                                </FormControl>
+                                                <SelectContent>
+                                                    {sizes.map((size) => (
+                                                        <SelectItem value={size} key={size}>{size}</SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                        </Select>
+                                    </FormItem>
+                                {/* )}
+                            /> */}
 
-                            <Select>
-                                <FormControl>
-                                <SelectTrigger>
-                                    <SelectValue placeholder="Select a gender" />
-                                </SelectTrigger>
-                                </FormControl>
-                                <SelectContent>
-                                    <SelectItem value='Male'>Male</SelectItem>
-                                    <SelectItem value='Female'>Female</SelectItem>
-                                    <SelectItem value='Unisex'>Unisex</SelectItem>
-                                </SelectContent>
-                            </Select>
+                            <FormField
+                                control={form.control}
+                                name="gender"
+                                render={({ field }) => (
+                                    <FormItem className="space-y-3">
+                                    <FormLabel>Gender</FormLabel>
+                                    <FormControl>
+                                        <RadioGroup
+                                            onValueChange={field.onChange}
+                                            defaultValue={field.value}
+                                            className="flex space-x-1"
+                                        >
+                                        <FormItem className="flex items-center space-x-3 space-y-0">
+                                            <FormControl>
+                                            <RadioGroupItem value="male" />
+                                            </FormControl>
+                                            <FormLabel className="font-normal">
+                                                Male
+                                            </FormLabel>
+                                        </FormItem>
+                                        <FormItem className="flex items-center space-x-3 space-y-0">
+                                            <FormControl>
+                                            <RadioGroupItem value="female" />
+                                            </FormControl>
+                                            <FormLabel className="font-normal">
+                                            Female
+                                            </FormLabel>
+                                        </FormItem>
+                                        <FormItem className="flex items-center space-x-3 space-y-0">
+                                            <FormControl>
+                                            <RadioGroupItem value="unisex" />
+                                            </FormControl>
+                                            <FormLabel className="font-normal">Unisex</FormLabel>
+                                        </FormItem>
+                                        </RadioGroup>
+                                    </FormControl>
+                                    <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+
+                            {/* image dialog */}
+                            <Dialog>
+                                <DialogHeader>
+                                    <DialogTrigger>
+                                        <Button
+                                            variant={'outline'}
+                                            // asChild
+                                            className="space-x-2"
+                                            type="button"
+                                        >
+                                            <span>Add images</span>
+                                            <ImageIcon />
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogTitle>Add images</DialogTitle>
+                                        <MultiUploader />
+                                    </DialogContent>
+                                </DialogHeader>
+                            </Dialog>
                         </div>
                     </div>
 
@@ -277,16 +363,17 @@ const ProductForm = ({ productData }: ProductFormProps) => {
                     </div>
                 </div>
 
+                {images && images.length! > 0 &&
                 <div className="mt-6 lg:mt-0">
                     <ImageSlider images={images} />
-                </div>
+                </div>}
             </div>
-
-        <div className="flex gap-2">
-            <Button disabled={isSubmitting}>Submit</Button>
-            <Button variant={'secondary'} type="button">Save draft</Button>
-        </div>
-      </form>
+            
+            <div className="flex gap-2">
+                <Button disabled={isSubmitting}>Submit</Button>
+                <Button variant={'secondary'} type="button">Save draft</Button>
+            </div>
+        </form>
     </Form>
   )
 }

@@ -14,8 +14,9 @@ export const productSchema = z.object({
     discount: z.string().default('0'),
     inventory: z.string().default('0'),
     tags: z.string().min(3).max(50),
-    gender: z.string().min(3).max(255),
-    // size: ,
+    gender: z.enum(["male", "female", "unisex"], {
+        required_error: "You need to select a gender.",
+    }),
 })
 
 export const categorySchema = z.object({

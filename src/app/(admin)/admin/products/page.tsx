@@ -1,3 +1,4 @@
+import Component from '@/components/elements/products';
 import ContentShell from '@/components/shells/content-shell';
 import { buttonVariants } from '@/components/ui/button';
 import { PlusIcon } from '@radix-ui/react-icons';
@@ -8,7 +9,7 @@ const Admin = () => {
   return (
     <ContentShell
       title='Products'
-      subtitle='See all the fucking products you got'
+      subtitle='Manage your products and view their sales performance.'
     >
       <Link
         href={'/admin/products/create-product'}
@@ -17,6 +18,8 @@ const Admin = () => {
         Add product
         <PlusIcon className='ml-1' />  
       </Link>
+
+      <Component />
     </ContentShell>
   )
 }
