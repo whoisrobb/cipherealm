@@ -14,27 +14,16 @@ export const getCategories = async () => {
             with: {
                 subcategories: true
             }
-        })
+        });
 
-        const temp = [{
-            categoryId: '827e2-o92id-23u20-jd023ud0',
-            title: 'Exhibit',
-            subcategories: [{
-                categoryId: '827e2-o92id-23u20-jd023ud0',
-                title: 'Efdens',
-                description: 'Efdens iko kwa kalatas',
-                subcategoryId: 'k25e2-o9s87c-23u20-0kw9qd81'
-            }]
-        }]
-
-        return { data: temp };
+        return { data: categories };
     } catch (error) {
         return { error: getErrorMessage(error) };
     }
 };
 
 // CREATE CATEGORY
-export const createCategory = async (title: string) => {
+export const handleCreateCategory = async (title: string) => {
     try {
         const category = await db.insert(CategoryTable)
             .values({
@@ -44,36 +33,36 @@ export const createCategory = async (title: string) => {
                 title: CategoryTable.title
             })
             
-            revalidatePath('/dashboard/site');
+            revalidatePath('/admin/site');
 
-            return { data: category };
+            return { data: category[0] };
     } catch (error) {
         return { error: getErrorMessage(error) };
     }
 };
 
 // CREATE SUBCATEGORY
-export const createSubcategory = async (
+export const handleCreateSubcategory = async (
     { title, description, categoryId }:
     { title: string, description: string, categoryId: string }
 ) => {
     try {
-        const subcategory = db.insert(SubcategoryTable)
+        const subcategory = await db.insert(SubcategoryTable)
             .values({ title, description, categoryId })
             .returning({
                 title: SubcategoryTable.title
             });
 
-            revalidatePath('/dashboard/site');
+            revalidatePath('/admin/site');
 
-            return { data: subcategory };
+            return { data: subcategory[0] };
     } catch (error) {
         return { error: getErrorMessage(error) };
     }
 };
 
 // DELETE CATEGORY
-export const deleteSubcategory = async (subcategoryId: string) => {
+export const handleDeleteSubcategory = async (subcategoryId: string) => {
     try {
         await db.delete(SubcategoryTable)
             .where(eq(SubcategoryTable.subcategoryId, subcategoryId))

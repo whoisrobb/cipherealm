@@ -18,7 +18,8 @@ import { Textarea } from "../ui/textarea";
 import { useState } from "react";
 import { TrashIcon } from "@radix-ui/react-icons";
 import { subcategorySchema } from "@/lib/validators";
-import { createSubcategory, deleteCategory } from "@/actions/site";
+import { deleteCategory, handleCreateSubcategory } from "@/actions/site";
+import { toast } from "sonner";
 
 type InputSchema = z.infer<typeof subcategorySchema>
 
@@ -34,10 +35,15 @@ const SubcategoryForm = ({categoryId}: {categoryId: string}) => {
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const onSubmit = async(values: InputSchema) => {
-        const { title, description } = values;
-        setIsSubmitting(true);
-        await createSubcategory({ title, description, categoryId })
-        setIsSubmitting(false);
+      const { title, description } = values;
+      setIsSubmitting(true);
+      const { data, error } = await handleCreateSubcategory({ title, description, categoryId });
+      if (error) {
+        toast.error(error)
+      } else {
+        toast.success(data!.title)
+      }
+      setIsSubmitting(false);
     };
     
     return (

@@ -16,7 +16,8 @@ import { Button } from "../ui/button";
 import { categorySchema } from "@/lib/validators";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { createCategory } from "@/actions/site";
+import { handleCreateCategory } from "@/actions/site";
+import { toast } from "sonner";
 
 type InputSchema = z.infer<typeof categorySchema>
 
@@ -32,7 +33,12 @@ const CategoryForm = () => {
   const onSubmit = async (values: InputSchema) => {
     const { title } = values;
     setIsSubmitting(true);
-    await createCategory(title)
+    const { data, error } = await handleCreateCategory(title)
+    if (error) {
+      toast.error(error)
+    } else {
+      toast.success(data?.title)
+    }
     form.reset();
     setIsSubmitting(false);
   }

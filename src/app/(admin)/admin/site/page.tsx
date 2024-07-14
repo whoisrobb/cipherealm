@@ -8,9 +8,9 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
-import { Pencil1Icon, PlusIcon, TrashIcon } from '@radix-ui/react-icons';
+import { Pencil1Icon, PlusIcon } from '@radix-ui/react-icons';
 import ContentShell from '@/components/shells/content-shell';
-import { deleteSubcategory, getCategories } from '@/actions/site';
+import { getCategories } from '@/actions/site';
 import SubcategoryForm from '@/components/forms/subcategory-form';
 import CategoryForm from '@/components/forms/category-form';
 import AccordionButton from '../../_components/accordion-button';
