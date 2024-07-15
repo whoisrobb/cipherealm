@@ -3,7 +3,7 @@ import { ReactNode } from "react"
 
 interface ContentSectionProps extends React.HTMLAttributes<HTMLDivElement> {
   children: ReactNode,
-  title: string,
+  title?: string,
   subtitle?: string,
 }
 

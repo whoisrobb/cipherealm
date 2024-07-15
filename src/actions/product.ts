@@ -4,7 +4,9 @@ import { Product, ProductTable } from "@/db/schema";
 import { getErrorMessage } from "./util";
 import db from "@/db/drizzle";
 import { revalidatePath } from "next/cache";
-import { eq } from "drizzle-orm";
+import { and, asc, desc, eq, gte, lte } from "drizzle-orm";
+import { SearchParams } from "@/lib/types";
+import { searchParamsSchema } from "@/lib/validators";
 
 export type ProductFormData = {
     images: string[] | null;
@@ -76,6 +78,46 @@ export const handleFetchAllProducts = async () => {
         return { error: getErrorMessage(error) };
     }
 }
+
+// FETCH FILTERED PRODUCTS
+export const handleFetchFilteredProducts = async (searchParams: SearchParams) => {
+    try {
+        const search = searchParamsSchema.parse(searchParams)
+        const category = search.category?.split(".").toString() ?? null
+        const subCategory = search.subcategory?.split(".").toString() ?? null
+        const priceFrom = search.priceFrom?.split(".").toString() ?? null
+        const priceTo = search.priceTo?.split(".").toString() ?? null
+        const order = search.order?.split(".").toString() ?? "desc"
+        const orderBy = search.orderBy?.split(".").toString() ?? "createdAt"
+        const products = await db.select()
+            .from(ProductTable)
+            .where(
+              and(
+                category
+                  ? eq(ProductTable.category, category)
+                  : undefined,
+                subCategory
+                  ? eq(ProductTable.subcategory, subCategory)
+                  : undefined,
+                priceFrom ? gte(ProductTable.price, priceFrom) : undefined,
+                priceTo ? lte(ProductTable.price, priceTo) : undefined
+              )
+            )
+            .orderBy(
+                orderBy === "price"
+                    ? order === "asc"
+                        ? asc(ProductTable.price)
+                        : desc(ProductTable.price)
+                : order === "asc"
+                    ? asc(ProductTable.createdAt)
+                    : desc(ProductTable.createdAt)
+            )
+
+        return { data: products };
+    } catch (error) {
+        return { error: getErrorMessage(error) };
+    }
+};
 
 // FETCH SINGLE PRODUCT
 export const handleFetchSingleProduct = async (productId: string) => {

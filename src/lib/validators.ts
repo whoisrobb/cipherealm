@@ -7,7 +7,7 @@ export const storeSchema = z.object({
 
 export const productSchema = z.object({
     name: z.string().min(3).max(50),
-    description: z.string().min(3).max(255),
+    description: z.string().min(3).max(1024),
     category: z.string().min(3).max(255),
     subcategory: z.string().min(3).max(255),
     price: z.string().default('0'),
@@ -34,7 +34,7 @@ export const searchParamsSchema = z.object({
     priceTo: z.string().optional(),
     priceFrom: z.string().optional(),
     category: z.string().optional(),
-    subCategory: z.string().optional(),
+    subcategory: z.string().optional(),
     order: z.string().optional(),
     orderBy: z.string().optional(),
 })
